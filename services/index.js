@@ -30,11 +30,7 @@ export const getPosts = async () => {
               image {
                 url
               }
-              localizations {
-      id
-      name
-      locale
-    }
+              
             }
             ingredientCategories {
               name
@@ -42,11 +38,7 @@ export const getPosts = async () => {
               image {
                 url
               }
-              localizations {
-      id
-      name
-      locale
-    }
+              
             }
             countries {
               categoryDescription
@@ -55,11 +47,7 @@ export const getPosts = async () => {
               }
               name
               url
-              localizations {
-      id
-      name
-      locale
-    }
+              
             }
           }
         }
@@ -92,13 +80,7 @@ export const getPostDetails = async (url) => {
         content {
           raw
         }
-        localizations {
-          excerpt
-          title
-          content {
-            raw
-          }
-        }
+        
         categories {
           name
           url
@@ -106,11 +88,7 @@ export const getPostDetails = async (url) => {
           image {
             url
           }
-          localizations {
-      id
-      name
-      locale
-    }
+         
         }
         ingredients
         ingredientCategories {
@@ -119,11 +97,7 @@ export const getPostDetails = async (url) => {
           image {
             url
           }
-          localizations {
-      id
-      name
-      locale
-    }
+          
         }
         countries {
           categoryDescription
@@ -132,11 +106,7 @@ export const getPostDetails = async (url) => {
           }
           name
           url
-          localizations {
-      id
-      name
-      locale
-    }
+         
         }
       }
     }
@@ -203,11 +173,7 @@ export const getCategories = async () => {
         image {
           url
         }
-        localizations {
-      id
-      name
-      locale
-    }
+        
       }
     }
   `;
@@ -226,11 +192,7 @@ export const getCountries = async () => {
         }
         name
         url
-        localizations {
-      id
-      name
-      locale
-    }
+        
       }
     }
   `;
@@ -248,11 +210,7 @@ export const getIngredientCategories = async () => {
         image {
           url
         }
-        localizations {
-      id
-      name
-      locale
-    }
+        
       }
     }
   `;
@@ -304,13 +262,7 @@ export const getFeaturedPosts = async () => {
         title
         url
         createdAt
-        localizations {
-          excerpt
-          title
-          content {
-            raw
-          }
-        }
+       
       }
     }   
   `;
@@ -349,16 +301,7 @@ export const getCategoryPost = async (url) => {
               image {
                 url
               }
-              localizations {
-      id
-      name
-      locale
-      excerpt
-          title
-          content {
-            raw
-          }
-    }
+              
             }
           }
         }
@@ -406,16 +349,7 @@ export const getIngredientPost = async (url) => {
               image {
                 url
               }
-              localizations {
-      id
-      name
-      locale
-      excerpt
-          title
-          content {
-            raw
-          }
-    }
+              
             }
           }
         }
@@ -456,16 +390,7 @@ export const getCountryPost = async (url) => {
               image {
                 url
               }
-              localizations {
-      id
-      name
-      locale
-      excerpt
-          title
-          content {
-            raw
-          }
-    }
+              
             }
             categories {
               categoryDescription
@@ -474,11 +399,7 @@ export const getCountryPost = async (url) => {
                 url
               }
               url
-              localizations {
-      id
-      name
-      locale
-    }
+             
             }
           }
         }
@@ -499,11 +420,7 @@ export const getBlogSubjects = async () => {
         image {
           url
         }
-        localizations {
-      id
-      locale
-      name
-    }
+       
       }
     }
   `;
@@ -517,11 +434,7 @@ export const getCreatorDescription = async () => {
     query MyQuery {
       generalInfos {
         creatorDescription
-        localizations {
-      id
-      locale
-
-    }
+        
       }
     }
   `;
