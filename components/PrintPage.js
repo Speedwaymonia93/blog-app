@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import React from "react";
 import moment from "moment";
 import Link from "next/link";
+
 const ComponentToPrint = forwardRef((props, ref) => {
   const ingredientsArr = props.post.ingredients ? props.post.ingredients.split(",") : null;
   const getContentFragment = (index, text, obj, type) => {
