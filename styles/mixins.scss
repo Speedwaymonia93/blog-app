@@ -1,0 +1,11 @@
+@mixin icon-mixin {
+    background-color: #fff;
+    border: 2px solid #fff ;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+
+    &:hover{
+        opacity: 0.5
+    }
+}
