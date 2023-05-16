@@ -85,7 +85,7 @@ export async function getStaticPaths() {
     const countires = await getCountries();
     return {
       paths: countires.map(({ url }) => ({ params: { url } })),
-      fallback: true,
+      fallback: false,
     };
   } catch (error) {
     console.log(error);

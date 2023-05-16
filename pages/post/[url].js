@@ -69,6 +69,6 @@ export async function getStaticPaths() {
   const posts = await getPosts();
   return {
     paths: posts.map(({ node: { url } }) => ({ params: { url } })),
-    fallback: true,
+    fallback: false,
   };
 }

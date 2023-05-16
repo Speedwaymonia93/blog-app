@@ -83,7 +83,7 @@ export async function getStaticPaths() {
     const ingredients = await getIngredientCategories();
     return {
       paths: ingredients.map(({ url }) => ({ params: { url } })),
-      fallback: true,
+      fallback: false,
     };
   } catch (error) {
     console.log(error);

@@ -94,7 +94,7 @@ export async function getStaticPaths() {
     const categories = await getCategories();
     return {
       paths: categories.map(({ url }) => ({ params: { url } })),
-      fallback: true,
+      fallback: false,
     };
   } catch (error) {
     console.log(error);
