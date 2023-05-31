@@ -39,10 +39,11 @@ const Header = () => {
             <div className="flex flex-row">
               <Link href="/" className="flex flex-row mb-4">
                 <Image src={baker} className="block md:mr-2 baker-img" />
+
                 <span className="title cursor-pointer font-bold md:text-4xl text-white header sm:text-xs">
                   {language === "en"
                     ? "Monica's Oven - Bread & Pastries - Baking Blog"
-                    : "Monica's Oven - Bread & Pastries - Blog cukierniczy"}
+                    : "Monica's Oven - Bread & Pastries \n - Blog cukierniczy"}
                 </span>
               </Link>
             </div>
