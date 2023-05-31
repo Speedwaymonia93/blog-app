@@ -1,10 +1,13 @@
 import { forwardRef } from "react";
 import React from "react";
-import moment from "moment";
+import moment, { lang } from "moment";
 import Link from "next/link";
-
+import { useAppContext } from "../services/context";
 const ComponentToPrint = forwardRef((props, ref) => {
   const ingredientsArr = props.post.ingredients ? props.post.ingredients.split(",") : null;
+  const translatedArray = props.post.localizations[0].ingredients ? props.post.localizations[0].ingredients.split(",") : null;
+
+  const { language } = useAppContext();
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
 
@@ -196,37 +199,61 @@ const ComponentToPrint = forwardRef((props, ref) => {
                 />
               </svg>
               <span className="align-middle">
-                {moment(props.post.createdAt).format("MMM DD, YYYY")}
+                {language === "en"
+                ? moment(props.post.createdAt).format("MMM DD, YYYY")
+                : moment(props.post.createdAt).format("DD.MM.YYYY")}
               </span>
             </div>
           </div>
 
           <div>
             <div className="flex justify-left mb-4">
+            {props.post.ingredientCategories.map((category) => (
+              <p className="bg-blue-500 p-2 rounded text-slate-50 w-1/5 text-center ">
+                {language === "en"
+                  ? category.name
+                  : category.localizations[0].name}
+              </p>
+            ))}
+          </div>
+            <div className="flex justify-left mb-4">
               {props.post.categories.map((category) => (
                 <p className="bg-sky-400 p-2 rounded text-slate-50 w-1/5 text-center">
-                  {category.name}
+                  {language === "en"
+                  ? category.name
+                  : category.localizations[0].name}
                 </p>
               ))}
             </div>
              <div className="flex justify-left mb-4">
               {
-                ingredientsArr ? ingredientsArr.map((ingredient) => (
+                language === "en" ? ingredientsArr.map((ingredient) => (
               <p className="bg-sky-200 p-2 rounded text-slate-80 lg:w-1/5 sm:w-full text-center mr-2">
                 {ingredient}
               </p>
-            )) : null
+            )) : translatedArray.map((ingredient) => (
+              <p className="bg-sky-200 p-2 rounded text-slate-80 lg:w-1/5 sm:w-full text-center mr-2">
+                {ingredient}
+              </p>
+            )) 
                 }
           </div>
-            <h1 className="mb-8 text-3xl font-semibold"> {props.post.title}</h1>
-
-            {props.post.content.raw.children.map((typeObj, index) => {
+            <h1 className="mb-8 text-3xl font-semibold">{language === "en" ? props.post.title : props.post.localizations[0].title}</h1>
+            {
+              language === "en" ? props.post.content.raw.children.map((typeObj, index) => {
               const children = typeObj.children.map((item, itemindex) =>
                 getContentFragment(itemindex, item.text, item)
               );
 
               return getContentFragment(index, children, typeObj, typeObj.type);
-            })}
+            }) : props.post.localizations[0].content.raw.children.map((typeObj, index) => {
+              const children = typeObj.children.map((item, itemindex) =>
+                getContentFragment(itemindex, item.text, item)
+              );
+
+              return getContentFragment(index, children, typeObj, typeObj.type);
+            })
+}
           </div>
         </div>
       </div>

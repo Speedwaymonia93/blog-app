@@ -4,20 +4,19 @@ import {
   getCreatorDescription,
   getCountries,
 } from "../services";
-import {
-  FaFacebookSquare,
-  FaInstagramSquare,
-  FaFacebookMessenger,
-} from "react-icons/fa";
+import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Link from "next/link";
 import NewsletterSubscribe from "./NewsletterSubscribe";
+import DropdownLanguage from "./DropdownLanguage";
+import { useAppContext } from "../services/context";
 
 const Footer = () => {
   const [blogSubjects, setBlogSubjects] = useState([]);
   const [creatorDes, setCreatorDes] = useState([]);
   const [countries, setCountries] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const { language } = useAppContext();
 
   useEffect(() => {
     getBlogSubjects().then((newInfo) => setBlogSubjects(newInfo));
@@ -26,9 +25,12 @@ const Footer = () => {
   }, []);
 
   let des = "";
+  let translatedDes = "";
+
   const getDes = creatorDes.map((item) => {
     des = item.creatorDescription;
-    return des;
+    translatedDes = item.localizations[0].creatorDescription;
+    return;
   });
 
   return (
@@ -36,13 +38,15 @@ const Footer = () => {
       <div className="md:flex sm:flex md:flex-row sm:flex-col p-8 w-full justify-center">
         <div className="sm:basis-4/12 sm:basis-full md:border-dashed md:border-r-4 md:border-indigo-500 p-4">
           <h4 className="text-center text-sky-400 font-bold text-xl">
-            About me
+            {language === "en" ? "About me" : "O mnie"}
           </h4>
-          <p className="text-slate-50 mt-4">{des}</p>
+          <p className="text-slate-50 mt-4">
+            {language === "en" ? des : translatedDes}
+          </p>
         </div>
         <div className="sm:basis-4/12 sm:basis-full md:border-dashed md:border-dashed md:border-r-4 md:border-indigo-500 p-4">
           <h4 className="text-center text-sky-400 font-bold text-xl">
-            About the blog
+            {language === "en" ? " About the blog" : "O blogu"}
           </h4>
           <ul>
             {blogSubjects.map((subject, index) => {
@@ -58,7 +62,9 @@ const Footer = () => {
                     />
                   </div>
                   <div className="flex-grow ml-2 text-slate-50">
-                    {subject.name}
+                    {language === "en"
+                      ? subject.name
+                      : subject.localizations[0].name}
                   </div>
                 </div>
               );
@@ -67,7 +73,7 @@ const Footer = () => {
         </div>
         <div className="sm:basis-4/12 sm:basis-full ">
           <h4 className="text-center text-sky-400 font-bold text-xl p-4">
-            Where to find me
+            {language === "en" ? " Where to find me" : "Gdzie mnie znajdziesz"}
           </h4>
           <div className="flex justify-center flex-row mb-8 content-between">
             <Link
@@ -93,17 +99,26 @@ const Footer = () => {
               type="button"
               onClick={() => setShowModal(true)}
               className="rounded-full transition duration-500 ease transform hover:-translate-y-1 bg-blue-600 text-lg font-medium rounded-full text-white px-8 py-3 cursor-pointer">
-              Subscribe to the newsletter
+              {language === "en"
+                ? "Subscribe to the newsletter"
+                : "Zapisz sie do newslettera"}
             </button>
+          </div>
+          <div className="flex justify-center mt-5">
+            <DropdownLanguage />
           </div>
         </div>
       </div>
 
       <div className="w-full text-center p-4 text-slate-300">
         <p>
-          © 2023 Monica's Oven - Bread & Pastires Wszystkie prawa zastrzeżone.
-          Kopiowanie i rozpowszechnianie bez zgody Monica's Oven - Bread &
-          Pastries zabronione.
+          {language === "en"
+            ? `© 2023 Monica's Oven - Bread & Pastries
+          All rights reserved. Reproduction and distribution without permission
+          Monica's Oven - Bread & Pastries prohibited.`
+            : `© 2023 Monica's Oven - Bread & Pastires
+          Wszystkie prawa zastrzeżone. Kopiowanie i rozpowszechnianie bez zgody
+          Monica's Oven - Bread & Pastries zabronione`}
         </p>
       </div>
       <NewsletterSubscribe

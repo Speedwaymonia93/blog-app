@@ -32,7 +32,7 @@
 
 // export default Print;
 import React, { useRef } from "react";
-
+import { useAppContext } from "../services/context";
 import { ReactToPrint, useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./PrintPage";
 
@@ -41,7 +41,7 @@ import Image from "next/image";
 
 function Print({ post }) {
   let componentRef = useRef();
-
+  const { language } = useAppContext();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -87,7 +87,7 @@ function Print({ post }) {
           className="flex items-center flex-col"
           type="button">
           <p className="text-center text-white font-semibold pb-1 hover:text-sky-500">
-            Print the post
+            {language === "en" ? "Print the post" : "Wydrukuj posta"}
           </p>
           <Image
             src={printIcon}

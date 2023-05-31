@@ -2,18 +2,17 @@ import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import { getCategories } from "../services";
 import Image from "next/image";
-import logo from "../images/pizzeria.jpg";
 import breadbasket from "../images/bread-basket-no-bg.png";
 import baker from "../images/chef.png";
 import Navigation from "./Navigation";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrClose } from "react-icons/gr";
-// import DropdownLanguage from "./DropdownLanguage";
-
+import { useAppContext } from "../services/context";
 const Header = () => {
   const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  // const [defaultLanguage, setDefaultLanguage] = useState("pl");
+  const { language } = useAppContext();
+
   function toggle() {
     setIsOpen((isOpen) => !isOpen);
   }
@@ -41,10 +40,11 @@ const Header = () => {
               <Link href="/" className="flex flex-row mb-4">
                 <Image src={baker} className="block md:mr-2 baker-img" />
                 <span className="title cursor-pointer font-bold md:text-4xl text-white header sm:text-xs">
-                  Monica's Oven - Bread & Pastries - Baking Blog
+                  {language === "en"
+                    ? "Monica's Oven - Bread & Pastries - Baking Blog"
+                    : "Monica's Oven - Bread & Pastries - Blog cukierniczy"}
                 </span>
               </Link>
-              {/* <DropdownLanguage defaultLanguage={defaultLanguage} /> */}
             </div>
 
             <Image src={breadbasket} className="logo-style" />
@@ -59,7 +59,9 @@ const Header = () => {
                 href={`/category/${category.url}`}>
                 {/* <span className='md:float-right mt-2 align-middle text-white ml-4 font-semibold cursor-pointer'> */}
                 <span className="mt-2 align-middle text-white ml-4 font-semibold cursor-pointer hover:text-sky-500">
-                  {category.name}
+                  {language === "en"
+                    ? category.name
+                    : category.localizations[0].name}
                 </span>
                 <img
                   alt={category.name}

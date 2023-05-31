@@ -1,24 +1,37 @@
 import React from "react";
 import { useRouter } from "next/router";
-
+import { useAppContext } from "../../services/context";
 import { getCountries, getCountryPost } from "../../services";
 import { PostCard, Loader, Countries } from "../../components";
 import Image from "next/image";
-import empty from '../../images/empty.png';
+import empty from "../../images/empty.png";
 const CountryPost = ({ posts }) => {
   const router = useRouter();
   const countryName = [];
   const countryImage = [];
   const countryDescription = [];
+  const translatedCountry = [];
+  const translatedDesc = [];
+  const { language } = useAppContext();
   const postsLength = posts.length;
+
   posts.map((post) => {
+    console.log({ post });
     const singlePost = post.node.countries;
     singlePost.map((country) => {
       countryName.push(country.name);
       countryImage.push(country.image.url);
       countryDescription.push(country.countryDescription);
+      translatedCountry.push(country.localizations[0].name);
+      translatedDesc.push(country.localizations[0].categoryDescription);
     });
-    return countryName, countryImage, countryDescription;
+    return (
+      countryName,
+      countryImage,
+      countryDescription,
+      translatedCountry,
+      translatedDesc
+    );
   });
 
   if (router.isFallback) {
@@ -28,23 +41,35 @@ const CountryPost = ({ posts }) => {
   return (
     <div className="container mx-auto px-10 mb-8">
       {postsLength > 0 ? (
-        <div>
-          <h3>{countryName && countryName} </h3>
-          <img
-            alt={countryName}
-            height="100px"
-            width="100px"
-            className="align-middle rounded-full"
-            src={countryImage}
-          />
+        <div className="bg-white bg-opacity-20 p-4 mb-4 rounded items-center flex flex-col">
+          <div className="flex flex-col items-center">
+            <img
+              alt={countryName}
+              height="100px"
+              width="100px"
+              className="align-middle rounded-full"
+              src={countryImage}
+            />
+             <h3 className="mr-2 text-3xl font-bold">{language === "en" ? countryName : translatedCountry}</h3>
+          </div>
+          <div className="m-2">
+            <p>
+              {language === "en" ? countryDescription[0] : translatedDesc[0]}
+            </p>
+          </div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center text-center error-background p-5 rounded-md">
           <h3 className="text-3xl mb-2 text-red-800 font-bold">
-            There is no content yet here
+            {language === "en"
+              ? "There is no content yet here"
+              : "Na razie nie ma tutaj zawartości"}
           </h3>
           <p className="text-xl mb-2 text-red-300">
-            Be patient. Feel free to check out other parts of the blog.{" "}
+            {language === "en"
+              ? "Be patient. Feel free to check out other parts of the blog"
+              : "Cierpliwości. Sprawdź inne części bloga"}
+            .{" "}
           </p>
           <Image src={empty} width={400} height={500} className="block" />
         </div>

@@ -19,7 +19,8 @@ export { default as DownloadPDF } from './DownloadPDF'
 export { default as ModalSubscribe } from './Modal'
 export { default as NewsletterSubscribe } from './NewsletterSubscribe'
 export { default as MyDocument } from './GeneratedPDF'
-
+export { default as DropdownLanguage } from './DropdownLanguage'
+export { default as FeaturedImages } from './FeaturedImages'
 
 
 

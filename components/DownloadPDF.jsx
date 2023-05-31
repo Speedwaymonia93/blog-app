@@ -3,9 +3,10 @@ import pdfIcon from "../images/pdf.png";
 import Image from "next/image";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import MyDocument from "./GeneratedPDF";
-
+import { useAppContext } from "../services/context";
 const DownloadPDF = ({ post }) => {
   const [isClient, setIsClient] = useState(false);
+  const { language } = useAppContext();
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -15,12 +16,18 @@ const DownloadPDF = ({ post }) => {
       {isClient && (
         <PDFDownloadLink
           className="flex items-center flex-col"
-          document={<MyDocument post={post} fileName={`post.pdf`} />}>
+          document={
+            <MyDocument
+              post={post}
+              fileName={`language==="en"? post.title : post.localization[0].title`}
+              language={language}
+            />
+          }>
           {({ blob, url, loading, error }) => {
             loading ? "Loading document" : "Download now!";
           }}
           <p className="text-center text-white font-semibold pb-1 hover:text-sky-500">
-            Download PDF
+            {language === "en" ? "Download PDF" : "Pobierz PDF"}
           </p>
           <Image
             src={pdfIcon}

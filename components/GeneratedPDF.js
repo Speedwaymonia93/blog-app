@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useAppContext } from "../services/context";
 import {
   Page,
   Text,
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
    }
 });
 
-const MyDocument = ({ post }) => {
-  const fileTitle = post.title;
+const MyDocument = ({ post, language }) => {
+  const fileTitle = post.title
   const image = post.featuredImage.url;
   const fileExcerpt = post.excerpt;
   const postContent = post.content.raw.children;
@@ -75,14 +75,14 @@ const MyDocument = ({ post }) => {
     <Document>
       <Page size="A4" style={styles.pageSettings} wrap>
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>{fileTitle}</Text>
+          <Text style={styles.titleStyle}>{language === "en" ?fileTitle : post.localizations[ 0 ].title}</Text>
           <Image src={image} alt={fileTitle} style={styles.imgStyle} />
         </View>
         <View style={styles.viewStyle}>
-          <Text>{fileExcerpt}</Text>
+          <Text>{language === "en" ? fileExcerpt : post.localizations[0].excerpt}</Text>
         </View>
         <View style={styles.viewStyle}>
-          <DocumentRenderer paragraphComnponent={postContent} />
+          <DocumentRenderer paragraphComnponent={language === "en" ? postContent : post.localizations[0].content.raw.children } />
         </View>
         
       </Page>

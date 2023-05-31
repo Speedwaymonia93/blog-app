@@ -1,22 +1,27 @@
 import React from "react";
 import { useRouter } from "next/router";
-
+import { useAppContext } from "../../services/context";
 import { getIngredientCategories, getIngredientPost } from "../../services";
 import { PostCard, Loader, Ingredients } from "../../components";
 import Image from "next/image";
-import empty from '../../images/empty.png';
+import empty from "../../images/empty.png";
 const IngredientPost = ({ posts }) => {
   const router = useRouter();
   const ingredientName = [];
   const ingredientImage = [];
+  const postDesc = [];
+  const translatedPostDec = [];
   const postsLength = posts.length;
+  const { language } = useAppContext();
   posts.map((post) => {
     const singlePost = post.node.ingredientCategories;
     singlePost.map((ingredient) => {
       ingredientName.push(ingredient.name);
       ingredientImage.push(ingredient.image.url);
+      postDesc.push(ingredient.description);
+      translatedPostDec.push(ingredient.localizations[0].description);
     });
-    return ingredientName, ingredientImage;
+    return ingredientName, ingredientImage, postDesc, translatedPostDec;
   });
 
   if (router.isFallback) {
@@ -26,23 +31,33 @@ const IngredientPost = ({ posts }) => {
   return (
     <div className="container mx-auto px-10 mb-8">
       {postsLength > 0 ? (
-        <div>
-          <h3>{ingredientName && ingredientName} </h3>
-          <img
-            alt={ingredientName}
-            height="100px"
-            width="100px"
-            className="align-middle rounded-full"
-            src={ingredientImage}
-          />
+        <div className="bg-white bg-opacity-20 p-4 mb-4 rounded items-center flex flex-col">
+          <div className="flex flex-col items-center">
+            <img
+              alt={ingredientName}
+              height="100px"
+              width="100px"
+              className="align-middle rounded-full"
+              src={ingredientImage}
+            />
+            <h3 className="mr-2 text-3xl font-bold">{ingredientName && ingredientName} </h3>
+          </div>
+          <div className="m-2">
+            <p>{language === "en" ? postDesc : translatedPostDec}</p>
+          </div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center text-center error-background p-5 rounded-md">
           <h3 className="text-3xl mb-2 text-red-800 font-bold">
-            There is no content yet here
+            {language === "en"
+              ? "There is no content yet here"
+              : "Na razie nie ma tutaj zawartości"}
           </h3>
           <p className="text-xl mb-2 text-red-300">
-            Be patient. Feel free to check out other parts of the blog.{" "}
+            {language === "en"
+              ? "Be patient. Feel free to check out other parts of the blog"
+              : "Cierpliwości. Sprawdź inne części bloga"}
+            .{" "}
           </p>
           <Image src={empty} width={400} height={500} className="block" />
         </div>

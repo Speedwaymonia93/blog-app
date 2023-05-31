@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { getCountries } from "../services";
-
+import { useAppContext } from "../services/context";
 const Countries = ({ click }) => {
   const [countries, setCountries] = useState([]);
+  const { language } = useAppContext();
 
   useEffect(() => {
     getCountries().then((newCountries) => setCountries(newCountries));
@@ -11,7 +12,9 @@ const Countries = ({ click }) => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-8 mb-8 pb-12 sm:w-full lg:mr-5">
-      <h3 className="text-xl mb-8 font-semibold border-b pb-4">Countries</h3>
+      <h3 className="text-xl mb-8 font-semibold border-b pb-4">
+        {language === "en" ? "Countires" : "Kraje świata"}
+      </h3>
       {countries.map((country) => {
         return (
           <Link
@@ -25,7 +28,9 @@ const Countries = ({ click }) => {
               width="30px"
               height="30px"
             />
-            <span className="cursor-pointer ml-2">{country.name}</span>
+            <span className="cursor-pointer ml-2">
+              {language === "en" ? country.name : country.localizations[0].name}
+            </span>
           </Link>
         );
       })}

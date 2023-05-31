@@ -14,9 +14,17 @@ export const getPosts = async () => {
               photo {
                 url
               }
+              localizations {
+                bio
+              }
             }
             createdAt
             title
+            localizations {
+              title
+              excerpt
+              ingredients
+            }
             url
             excerpt
             ingredients
@@ -30,7 +38,11 @@ export const getPosts = async () => {
               image {
                 url
               }
-              
+              localizations {
+                name
+                url
+                id
+              }
             }
             ingredientCategories {
               name
@@ -38,7 +50,11 @@ export const getPosts = async () => {
               image {
                 url
               }
-              
+              localizations {
+                id
+                name
+                locale
+              }
             }
             countries {
               categoryDescription
@@ -47,7 +63,11 @@ export const getPosts = async () => {
               }
               name
               url
-              
+              localizations {
+                id
+                name
+                locale
+              }
             }
           }
         }
@@ -64,6 +84,15 @@ export const getPostDetails = async (url) => {
     query GetPostDetails($url: String!) {
       post(where: { url: $url }) {
         title
+        localizations {
+          title
+          excerpt
+          ingredients
+        }
+        featuredImages {
+          url,
+          fileName
+        }
         excerpt
         featuredImage {
           url
@@ -74,13 +103,22 @@ export const getPostDetails = async (url) => {
           photo {
             url
           }
+          localizations {
+            bio
+          }
         }
         createdAt
         url
         content {
           raw
         }
-        
+        localizations {
+          excerpt
+          title
+          content {
+            raw
+          }
+        }
         categories {
           name
           url
@@ -88,7 +126,11 @@ export const getPostDetails = async (url) => {
           image {
             url
           }
-         
+          localizations {
+            id
+            name
+            locale
+          }
         }
         ingredients
         ingredientCategories {
@@ -97,7 +139,11 @@ export const getPostDetails = async (url) => {
           image {
             url
           }
-          
+          localizations {
+            id
+            name
+            locale
+          }
         }
         countries {
           categoryDescription
@@ -106,7 +152,11 @@ export const getPostDetails = async (url) => {
           }
           name
           url
-         
+          localizations {
+            id
+            name
+            locale
+          }
         }
       }
     }
@@ -129,6 +179,9 @@ export const getRecentPosts = async () => {
       featuredImage{
         url
       }
+      localizations{
+        title
+      }
       createdAt
       url
     }
@@ -150,6 +203,11 @@ export const getSimilarPosts = async (categories, url) => {
         last: 3
       ) {
         title
+        localizations {
+          title
+          excerpt
+          ingredients
+        }
         featuredImage {
           url
         }
@@ -173,7 +231,11 @@ export const getCategories = async () => {
         image {
           url
         }
-        
+        localizations {
+          id
+          name
+          locale
+        }
       }
     }
   `;
@@ -192,7 +254,11 @@ export const getCountries = async () => {
         }
         name
         url
-        
+        localizations {
+          id
+          name
+          locale
+        }
       }
     }
   `;
@@ -210,7 +276,11 @@ export const getIngredientCategories = async () => {
         image {
           url
         }
-        
+        localizations {
+          id
+          name
+          locale
+        }
       }
     }
   `;
@@ -260,9 +330,20 @@ export const getFeaturedPosts = async () => {
           url
         }
         title
+        localizations {
+          title
+          excerpt
+          ingredients
+        }
         url
         createdAt
-       
+         localizations {
+          excerpt
+          title
+          content {
+            raw
+          }
+        }
       }
     }   
   `;
@@ -285,12 +366,21 @@ export const getCategoryPost = async (url) => {
               photo {
                 url
               }
+              localizations {
+                bio
+              }
             }
+            featuredImages {
+          url,fileName
+        }
             createdAt
             url
             title
             excerpt
-            
+            localizations {
+              title
+              ingredients
+            }
             featuredImage {
               url
             }
@@ -301,7 +391,11 @@ export const getCategoryPost = async (url) => {
               image {
                 url
               }
-              
+              localizations {
+      name,
+      categoryDescription
+
+    }
             }
           }
         }
@@ -327,10 +421,22 @@ export const getIngredientPost = async (url) => {
               photo {
                 url
               }
+              localizations {
+                bio
+              }
             }
+            featuredImages {
+          url,
+          fileName
+        }
             createdAt
             url
             title
+            localizations {
+              title
+              excerpt
+              ingredients
+            }
             excerpt
             featuredImage {
               url
@@ -346,10 +452,25 @@ export const getIngredientPost = async (url) => {
             ingredientCategories {
               name
               url
+              description
               image {
                 url
               }
-              
+              localizations {
+                name
+                description
+
+              }
+              # localizations {
+              #   id
+              #   name
+              #   locale
+              #   excerpt
+              #   title
+              #   content {
+              #     raw
+              #   }
+              # }
             }
           }
         }
@@ -375,6 +496,9 @@ export const getCountryPost = async (url) => {
               photo {
                 url
               }
+              localizations {
+                bio
+              }
             }
             featuredImage {
               url
@@ -382,6 +506,11 @@ export const getCountryPost = async (url) => {
             createdAt
             excerpt
             title
+            localizations {
+              title
+              excerpt
+              ingredients
+            }
             url
             countries {
               categoryDescription
@@ -390,7 +519,10 @@ export const getCountryPost = async (url) => {
               image {
                 url
               }
-              
+              localizations {
+      name,
+      categoryDescription
+    }
             }
             categories {
               categoryDescription
@@ -399,7 +531,9 @@ export const getCountryPost = async (url) => {
                 url
               }
               url
-             
+              localizations {
+                name
+              }
             }
           }
         }
@@ -420,7 +554,9 @@ export const getBlogSubjects = async () => {
         image {
           url
         }
-       
+        localizations {
+          name
+        }
       }
     }
   `;
@@ -434,7 +570,9 @@ export const getCreatorDescription = async () => {
     query MyQuery {
       generalInfos {
         creatorDescription
-        
+        localizations {
+      creatorDescription
+    }
       }
     }
   `;

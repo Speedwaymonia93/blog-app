@@ -1,9 +1,12 @@
 import React from "react";
 import moment from "moment";
-import Ingredients from "./Ingredients";
-
+import { useAppContext } from "../services/context";
 import Link from "next/link";
+import FeaturedImages from "./FeaturedImages";
 const PostDetail = ({ post }) => {
+  console.log({ post });
+
+  const { language } = useAppContext();
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
 
@@ -152,8 +155,13 @@ const PostDetail = ({ post }) => {
         return modifiedText;
     }
   };
+
   const ingredientsArr = post.ingredients ? post.ingredients.split(",") : null;
-  console.log({ post });
+  const translatedArray = post.localizations[0].ingredients
+    ? post.localizations[0].ingredients.split(",")
+    : null;
+  const ingredientCategory = post.ingredientCategories;
+
   return (
     <div className="bg-white shadow-lg rounded-lg lg:pb-8 pb-12 mb-8">
       <div className="relative overflow-hiddwn shadow-md mb-6">
@@ -192,28 +200,48 @@ const PostDetail = ({ post }) => {
               />
             </svg>
             <span className="align-middle">
-              {moment(post.createdAt).format("MMM DD, YYYY")}
+              {language === "en"
+                ? moment(post.createdAt).format("MMM DD, YYYY")
+                : moment(post.createdAt).format("DD.MM.YYYY")}
             </span>
           </div>
         </div>
 
         <div className="p-2">
           <div className="flex justify-left mb-4">
-            {post.categories.map((category) => (
-              <p className="bg-sky-400 p-2 rounded text-slate-50 w-1/5 text-center">
-                {category.name}
+            {post.ingredientCategories.map((category) => (
+              <p className="bg-blue-500 p-2 rounded text-slate-50 w-1/5 text-center ">
+                {language === "en"
+                  ? category.name
+                  : category.localizations[0].name}
               </p>
             ))}
           </div>
           <div className="flex justify-left mb-4">
-            {ingredientsArr &&
-              ingredientsArr.map((ingredient) => (
-                <p className="bg-sky-200 p-2 rounded text-slate-80 lg:w-1/5 sm:w-full text-center mr-2">
-                  {ingredient}
-                </p>
-              ))}
+            {post.categories.map((category) => (
+              <p className="bg-sky-400 p-2 rounded text-slate-50 w-1/5 text-center">
+                {language === "en"
+                  ? category.name
+                  : category.localizations[0].name}
+              </p>
+            ))}
           </div>
-          <h1 className="mb-8 text-3xl font-semibold"> {post.title}</h1>
+          <div className="flex justify-left mb-4">
+            {language === "en"
+              ? ingredientsArr.map((ingredient) => (
+                  <p className="bg-sky-200 p-2 rounded text-slate-80 lg:w-1/5 sm:w-full text-center mr-2">
+                    {ingredient}
+                  </p>
+                ))
+              : translatedArray.map((ingredient) => (
+                  <p className="bg-sky-200 p-2 rounded text-slate-80 lg:w-1/5 sm:w-full text-center mr-2">
+                    {ingredient}
+                  </p>
+                ))}
+          </div>
+          <h1 className="mb-8 text-3xl font-semibold">
+            {language === "en" ? post.title : post.localizations[0].title}
+          </h1>
           {/* <RichText content={post.content.raw.children} /> */}
           {/* <div>
             <RichText
@@ -236,13 +264,33 @@ const PostDetail = ({ post }) => {
               }}
             />
           </div> */}
-          {post.content.raw.children.map((typeObj, index) => {
-            const children = typeObj.children.map((item, itemindex) =>
-              getContentFragment(itemindex, item.text, item)
-            );
+          {language === "en"
+            ? post.content.raw.children.map((typeObj, index) => {
+                const children = typeObj.children.map((item, itemindex) =>
+                  getContentFragment(itemindex, item.text, item)
+                );
 
-            return getContentFragment(index, children, typeObj, typeObj.type);
-          })}
+                return getContentFragment(
+                  index,
+                  children,
+                  typeObj,
+                  typeObj.type
+                );
+              })
+            : post.localizations[0].content.raw.children.map(
+                (typeObj, index) => {
+                  const children = typeObj.children.map((item, itemindex) =>
+                    getContentFragment(itemindex, item.text, item)
+                  );
+                  return getContentFragment(
+                    index,
+                    children,
+                    typeObj,
+                    typeObj.type
+                  );
+                }
+              )}
+          <FeaturedImages images={post.featuredImages} />
         </div>
       </div>
     </div>

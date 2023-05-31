@@ -1,15 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
-
 import { getCategories, getCategoryPost } from "../../services";
 import { PostCard, Categories, Loader } from "../../components";
 import empty from '../../images/empty.png';
 import Image from "next/image";
+import { useAppContext } from "../../services/context";
 const CategoryPost = ({ posts }) => {
   const router = useRouter();
   const categoryName = [];
   const categoryImage = [];
+  const translatedCategory = [];
+  const translatedDesc = [];
   const postsLength = posts.length;
+  const { language } = useAppContext();
   const categoryDescription = []
   posts.map((post) => {
     const singlePost = post.node.categories;
@@ -19,9 +22,10 @@ const CategoryPost = ({ posts }) => {
       categoryName.push(category.name);
       categoryImage.push(category.image.url);
       categoryDescription.push(category.categoryDescription)
-      console.log({categoryImage});
+      translatedCategory.push(category.localizations[0].name)
+      translatedDesc.push(category.localizations[0].categoryDescription)
     });
-    return categoryName, categoryName, categoryDescription;
+    return categoryName, categoryName, categoryDescription, translatedCategory, translatedDesc;
   });
 
   if (router.isFallback) {
@@ -32,7 +36,7 @@ const CategoryPost = ({ posts }) => {
     <div className="container mx-auto px-10 mb-8">
       {postsLength > 0 ? (
         <div className="bg-white bg-opacity-20 p-4 mb-4 rounded items-center flex flex-col">
-          <div className="flex flex-row items-center">
+          <div className="flex flex-col items-center">
             <img
             alt={categoryName[0]}
             height="100px"
@@ -40,16 +44,28 @@ const CategoryPost = ({ posts }) => {
             className="align-middle rounded-full"
             src={categoryImage[0]}
           />
-              <h3 className="text-3xl tet">{categoryName[0]} </h3>
+            <h3 className="text-3xl mr-2 font-bold">
+              {
+                language === "en" ?  categoryName[ 0 ] : translatedCategory[0]
+              }
+              </h3>
           </div>
           <div className="m-2">
-            <p>{ categoryDescription[0] }</p>
+            <p>{ language === "en" ? categoryDescription[0] : translatedDesc[0]}</p>
           </div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center text-center error-background p-5 rounded-md">
-            <h3 className="text-3xl mb-2 text-red-800 font-bold">There is no content yet here</h3>
-            <p className="text-xl mb-2 text-red-300">Be patient. Feel free to check out other parts of the blog. </p>
+            <h3 className="text-3xl mb-2 text-red-800 font-bold">
+              {
+                language === "en" ? "There is no content yet here": "Na razie nie ma tutaj zawartości"
+              }
+              </h3>
+            <p className="text-xl mb-2 text-red-300">
+              {
+                language === "en" ? "Be patient. Feel free to check out other parts of the blog" : "Cierpliwości. Sprawdź inne części bloga"
+              }
+              . </p>
            <Image src={empty} width={400} height={500} className="block" />
         </div>
       )}

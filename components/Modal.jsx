@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
 import checkedIcon from "../images/checked.png";
 import Image from "next/image";
+import { useAppContext } from "../services/context";
 const ModalSubscribe = ({
   isVisible,
   onClose,
@@ -12,6 +13,7 @@ const ModalSubscribe = ({
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
   const [name, setName] = useState(null);
+  const { language } = useAppContext();
   // console.log({ status });
   //   const [showModal, setShowModal] = useState(false);
 
@@ -76,14 +78,16 @@ const ModalSubscribe = ({
           onClick={() => onClose()}>
           <GrClose className="close-modal-icon" />
         </button>
-        <div className="bg-white p-6 rounded bg-gradient-to-r from-amber-500 via-yellow-500 to-pink-400">
+        <div className="backdrop-blur-3xl bg-white p-6 rounded bg-gradient-to-r from-amber-500 via-yellow-500 to-pink-400 drop-shadow-2xl">
           <h3
             className={
               "sending" === status || "success" === status
                 ? "hidden"
                 : "visible text-2xl font-semibold text-indigo-500 mb-5 text-center"
             }>
-            Subscribe to the newsletter
+            {language === "en"
+              ? "Subscribe to the newsletter"
+              : "Zapisz sie do newslettera"}
           </h3>
           <form
             className="space-y-6"
@@ -100,13 +104,15 @@ const ModalSubscribe = ({
                   : "visible"
               }>
               <label for="name" className="text-pink-700 font-bold">
-                Name:{" "}
+                {language === "en" ? "Name: " : "Imie: "}
               </label>
               <input
                 type="text"
                 name="name"
                 id="name"
-                placeholder="Enter your name"
+                placeholder={
+                  language === "en" ? "Enter your name" : "Wpisz Twoje imię"
+                }
                 required
                 className="rounded p-3 w-full bg-gray-100 bg-opacity-50 text-blue-700 mt-2"
                 onChange={(event) => setName(event?.target?.value ?? "")}
@@ -120,13 +126,17 @@ const ModalSubscribe = ({
                   : "visible"
               }>
               <label for="email" className="text-pink-700 font-bold">
-                Your email:{" "}
+                {language === "en" ? "Your email: " : "Twój email: "}
               </label>
               <input
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Enter your email address"
+                placeholder={
+                  language === "en"
+                    ? "Enter your email address"
+                    : "Wpisz adres email"
+                }
                 required
                 className="rounded p-3 w-full bg-gray-100 bg-opacity-50 text-blue-700 mt-2"
                 onChange={(event) => setEmail(event?.target?.value ?? "")}
@@ -141,15 +151,15 @@ const ModalSubscribe = ({
               }>
               <button
                 type="button"
-                className="m-5 rounded-full border border-rose-900 py-3 px-6 bg-red-600 text-white font-bold hover:bg-red-700 hover:text-gray-200"
+                className="m-5 rounded-lg border border-rose-900 py-3 px-6 bg-red-600 text-white font-bold hover:bg-red-700 hover:text-gray-200"
                 onClick={() => onClose()}>
-                Cancel
+                {language === "en" ? "Cancel" : "Nie"}
               </button>
               <button
                 onClick={handleFormSubmit}
                 type="submit"
-                className="m-5 border rounded-full border-lime-600 py-3 px-6 bg-lime-700 text-white font-bold hover:bg-lime-900 hover:text-gray-200">
-                Subscribe
+                className="m-5 border rounded-lg border-lime-600 py-3 px-6 bg-lime-700 text-white font-bold hover:bg-lime-900 hover:text-gray-200">
+                {language === "en" ? "Subscribe" : "Zapisz się"}
               </button>
             </div>
 
@@ -179,7 +189,9 @@ const ModalSubscribe = ({
                     />
                   </div>
                   <p className="text-green-600 text-center font-bold pt-2 text-xl">
-                    You can close the window and refresh the page.
+                    {language === "en"
+                      ? " You can close the window and refresh the page."
+                      : "Mozesz zamknąć okno i odświezyć strone"}
                   </p>
                 </>
               )}

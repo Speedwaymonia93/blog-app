@@ -20,6 +20,7 @@ const PostDetails = ({ post }) => {
   const router = useRouter();
   // const isRecipie = post.categories[ 0 ].name
   // console.log({isRecipie});
+  
   if (router.isFallback) {
     return <Loader />;
   }
